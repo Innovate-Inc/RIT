@@ -1,0 +1,170 @@
+{
+  "layers": [
+    {
+      "name": "Restarunts",
+      "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/52",
+      "definitionexpression": "",
+      "spatialsearchlayer": false,
+      "zoomScale": 10000,
+      "shareResult": true,
+      "addToAttrib": true,
+      "expressions": {
+        "expression": []
+      },
+      "titlefield": "Facility_Name",
+      "fields": {
+        "all": false,
+        "field": [
+          {
+            "name": "Facility_Name",
+            "alias": "Facility_Name",
+            "popuponly": true
+          }
+        ]
+      },
+      "links": {
+        "link": []
+      },
+      "showattachments": false,
+      "layersymbolfrom": "server"
+    },
+    {
+      "name": "Convience Stores",
+      "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/50",
+      "definitionexpression": "",
+      "spatialsearchlayer": false,
+      "zoomScale": 10000,
+      "shareResult": true,
+      "addToAttrib": true,
+      "expressions": {
+        "expression": []
+      },
+      "titlefield": "Facility_Name",
+      "fields": {
+        "all": false,
+        "field": [
+          {
+            "name": "Facility_Name",
+            "alias": "Facility_Name",
+            "popuponly": true
+          }
+        ]
+      },
+      "links": {
+        "link": []
+      },
+      "showattachments": false,
+      "layersymbolfrom": "server"
+    }
+  ],
+  "initialView": "text",
+  "multipartgraphicsearchchecked": false,
+  "addpointtolerancechecked": false,
+  "keepgraphicalsearchenabled": true,
+  "autozoomtoresults": true,
+  "mouseovergraphics": false,
+  "toleranceforpointgraphicalselection": 6,
+  "bufferDefaults": {
+    "bufferUnits": {
+      "bufferUnit": [
+        {
+          "name": "UNIT_FOOT",
+          "label": "Feet"
+        },
+        {
+          "name": "UNIT_STATUTE_MILE",
+          "label": "Miles"
+        },
+        {
+          "name": "UNIT_METER",
+          "label": "Meter"
+        }
+      ]
+    },
+    "bufferDefaultValue": 5,
+    "bufferWKID": 102003,
+    "simplefillsymbol": {
+      "color": [
+        1,
+        185,
+        253,
+        128
+      ],
+      "outline": {
+        "color": [
+          1,
+          185,
+          253,
+          204
+        ],
+        "width": 0.75,
+        "type": "esriSLS",
+        "style": "esriSLSSolid"
+      },
+      "type": "esriSFS",
+      "style": "esriSFSSolid"
+    }
+  },
+  "spatialrelationships": {
+    "spatialrelationship": [
+      {
+        "name": "esriSpatialRelContains",
+        "label": "entirely contained in"
+      },
+      {
+        "name": "esriSpatialRelIntersects",
+        "label": "intersected by"
+      },
+      {
+        "name": "esriSpatialRelEnvelopeIntersects",
+        "label": "intersected by envelope of"
+      }
+    ]
+  },
+  "graphicalsearchoptions": {
+    "enablepointselect": true,
+    "enablelineselect": true
+  },
+  "symbols": {
+    "simplemarkersymbol": null,
+    "picturemarkersymbol": {
+      "url": "/widgets/eSearch/images/i_search.png",
+      "height": "20",
+      "width": "20",
+      "type": "esriPMS",
+      "angle": "0"
+    },
+    "simplelinesymbol": {
+      "type": "esriSLS",
+      "style": "esriSLSSolid",
+      "color": [
+        255,
+        0,
+        0,
+        204
+      ],
+      "width": 2
+    },
+    "simplefillsymbol": {
+      "color": [
+        255,
+        0,
+        0,
+        128
+      ],
+      "outline": {
+        "color": [
+          255,
+          0,
+          0,
+          204
+        ],
+        "width": 2,
+        "type": "esriSLS",
+        "style": "esriSLSSolid"
+      },
+      "type": "esriSFS",
+      "style": "esriSFSSolid"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+<div>
+    <div style="text-align: right"><a href="mailto:allp2i@rit.edu?subject=Organic Resource Locator">Questions or Comments?</a></div><br />
+
+    <div style="margin-bottom: 5px"><b style="font-size: small">1. Choose Layer: </b></div><span id="layer_list"></span><br />
+    <br />
+    <div style="margin-bottom: 5px"><div style="margin-bottom: 5px"><b style="font-size: small">2. Choose Search Radius:</b></div><p><input type="number" id="sliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  value="5" min="1" max="250"/></p></div>
+    <div id="slider"></div>
+    <br />
+    <div style="font-weight:700; font-size: small">${nls.label1}</div>
+    <div>
+        <div id="search"></div>
+        <!--<button id="btnClear" data-dojo-type="dijit/form/Button">Clear</button>-->
+        <!--<button id="btnSearch" data-dojo-type="dijit/form/Button">Search</button>-->
+    </div>
+    <div>
+        <div style="position: relative; top: -7px; left: 10px;"><img src="./widgets/Demo/images/arrow2.png" style="height: 25px;">Click to search again</div>
+    </div>
+    <br />
+        <div id="messages"></div><br />
+        <div id="grid" style="height: 200px"></div><br />
+        <!--<button id="exportAll" onclick="window.exportData()"  data-dojo-type="dijit/form/Button" type="button">Export all to CSV</button><br />-->
+        <div id="downloadLbl" style="visibility:hidden" ><b style="font-size: small">4. Download Search Results: </b></div>
+        <div id="downloads">
+
+        </div>
+</div>

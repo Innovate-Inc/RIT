@@ -1,0 +1,405 @@
+{
+  "layerInfos": [
+    {
+      "name": "on farm",
+      "id": "P2I_web_service_2015_retail_2266_1",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/1"
+      },
+      "show": true
+    },
+    {
+      "name": "other",
+      "id": "P2I_web_service_2015_retail_2266_2",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/2"
+      },
+      "show": true
+    },
+    {
+      "name": "unknown",
+      "id": "P2I_web_service_2015_retail_2266_3",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/3"
+      },
+      "show": true
+    },
+    {
+      "name": "banquets",
+      "id": "P2I_web_service_2015_retail_2266_5",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/5"
+      },
+      "show": true
+    },
+    {
+      "name": "casinos",
+      "id": "P2I_web_service_2015_retail_2266_6",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/6"
+      },
+      "show": true
+    },
+    {
+      "name": "caterers",
+      "id": "P2I_web_service_2015_retail_2266_7",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/7"
+      },
+      "show": true
+    },
+    {
+      "name": "convention & meeting facilities",
+      "id": "P2I_web_service_2015_retail_2266_8",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/8"
+      },
+      "show": true
+    },
+    {
+      "name": "golf courses",
+      "id": "P2I_web_service_2015_retail_2266_9",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/9"
+      },
+      "show": true
+    },
+    {
+      "name": "halls & auditoriums",
+      "id": "P2I_web_service_2015_retail_2266_10",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/10"
+      },
+      "show": true
+    },
+    {
+      "name": "horse racing",
+      "id": "P2I_web_service_2015_retail_2266_11",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/11"
+      },
+      "show": true
+    },
+    {
+      "name": "hotels & motels",
+      "id": "P2I_web_service_2015_retail_2266_12",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/12"
+      },
+      "show": true
+    },
+    {
+      "name": "music shows",
+      "id": "P2I_web_service_2015_retail_2266_13",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/13"
+      },
+      "show": true
+    },
+    {
+      "name": "party planning services",
+      "id": "P2I_web_service_2015_retail_2266_14",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/14"
+      },
+      "show": true
+    },
+    {
+      "name": "resorts",
+      "id": "P2I_web_service_2015_retail_2266_15",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/15"
+      },
+      "show": true
+    },
+    {
+      "name": "skiing centers & resorts",
+      "id": "P2I_web_service_2015_retail_2266_16",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/16"
+      },
+      "show": true
+    },
+    {
+      "name": "compost facility",
+      "id": "P2I_web_service_2015_retail_2266_18",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/18"
+      },
+      "show": true
+    },
+    {
+      "name": "transfer station",
+      "id": "P2I_web_service_2015_retail_2266_19",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/19"
+      },
+      "show": true
+    },
+    {
+      "name": "cattle",
+      "id": "P2I_web_service_2015_retail_2266_21",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/21"
+      },
+      "show": true
+    },
+    {
+      "name": "dairy",
+      "id": "P2I_web_service_2015_retail_2266_22",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/22"
+      },
+      "show": true
+    },
+    {
+      "name": "heifers",
+      "id": "P2I_web_service_2015_retail_2266_23",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/23"
+      },
+      "show": true
+    },
+    {
+      "name": "horses",
+      "id": "P2I_web_service_2015_retail_2266_24",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/24"
+      },
+      "show": true
+    },
+    {
+      "name": "other-P2I_web_service_2015_retail_2266_25",
+      "id": "P2I_web_service_2015_retail_2266_25",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/25"
+      },
+      "show": true
+    },
+    {
+      "name": "poultry",
+      "id": "P2I_web_service_2015_retail_2266_26",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/26"
+      },
+      "show": true
+    },
+    {
+      "name": "sheep",
+      "id": "P2I_web_service_2015_retail_2266_27",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/27"
+      },
+      "show": true
+    },
+    {
+      "name": "swine",
+      "id": "P2I_web_service_2015_retail_2266_28",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/28"
+      },
+      "show": true
+    },
+    {
+      "name": "animal food",
+      "id": "P2I_web_service_2015_retail_2266_30",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/30"
+      },
+      "show": true
+    },
+    {
+      "name": "bakery/grains",
+      "id": "P2I_web_service_2015_retail_2266_31",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/31"
+      },
+      "show": true
+    },
+    {
+      "name": "beverages",
+      "id": "P2I_web_service_2015_retail_2266_32",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/32"
+      },
+      "show": true
+    },
+    {
+      "name": "breweries",
+      "id": "P2I_web_service_2015_retail_2266_33",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/33"
+      },
+      "show": true
+    },
+    {
+      "name": "coffee/tea",
+      "id": "P2I_web_service_2015_retail_2266_34",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/34"
+      },
+      "show": true
+    },
+    {
+      "name": "dairy-P2I_web_service_2015_retail_2266_35",
+      "id": "P2I_web_service_2015_retail_2266_35",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/35"
+      },
+      "show": true
+    },
+    {
+      "name": "distilleries",
+      "id": "P2I_web_service_2015_retail_2266_36",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/36"
+      },
+      "show": true
+    },
+    {
+      "name": "fruit/vegetables",
+      "id": "P2I_web_service_2015_retail_2266_37",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/37"
+      },
+      "show": true
+    },
+    {
+      "name": "meat/seafood",
+      "id": "P2I_web_service_2015_retail_2266_38",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/38"
+      },
+      "show": true
+    },
+    {
+      "name": "miscellaneous",
+      "id": "P2I_web_service_2015_retail_2266_39",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/39"
+      },
+      "show": true
+    },
+    {
+      "name": "sauces/dressings",
+      "id": "P2I_web_service_2015_retail_2266_40",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/40"
+      },
+      "show": true
+    },
+    {
+      "name": "wineries",
+      "id": "P2I_web_service_2015_retail_2266_41",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/41"
+      },
+      "show": true
+    },
+    {
+      "name": "nursing homes",
+      "id": "P2I_web_service_2015_retail_2266_43",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/43"
+      },
+      "show": true
+    },
+    {
+      "name": "military bases",
+      "id": "P2I_web_service_2015_retail_2266_44",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/44"
+      },
+      "show": true
+    },
+    {
+      "name": "hospitals",
+      "id": "P2I_web_service_2015_retail_2266_45",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/45"
+      },
+      "show": true
+    },
+    {
+      "name": "correctional facilities",
+      "id": "P2I_web_service_2015_retail_2266_46",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/46"
+      },
+      "show": true
+    },
+    {
+      "name": "colleges & universities",
+      "id": "P2I_web_service_2015_retail_2266_47",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/47"
+      },
+      "show": true
+    },
+    {
+      "name": "supermarkets",
+      "id": "P2I_web_service_2015_retail_2266_49",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/49"
+      },
+      "show": true
+    },
+    {
+      "name": "convenience stores",
+      "id": "P2I_web_service_2015_retail_2266_50",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/50"
+      },
+      "show": true
+    },
+    {
+      "name": "big box",
+      "id": "P2I_web_service_2015_retail_2266_51",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/51"
+      },
+      "show": true
+    },
+    {
+      "name": "Restaurants",
+      "id": "P2I_web_service_2015_retail_2266_52",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/52"
+      },
+      "show": true
+    },
+    {
+      "name": "Food Banks",
+      "id": "P2I_web_service_2015_retail_2266_53",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/53"
+      },
+      "show": true
+    },
+    {
+      "name": "BUD",
+      "id": "P2I_web_service_2015_retail_2266_54",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/54"
+      },
+      "show": true
+    },
+    {
+      "name": "Grease Trap Waste",
+      "id": "P2I_web_service_2015_retail_2266_55",
+      "layer": {
+        "url": "https://geoapps64.main.ad.rit.edu:6443/arcgis/rest/services/P2I_2015/P2I_web_service_2015_retail/MapServer/55"
+      },
+      "show": true
+    }
+  ],
+  "table": {
+    "pageSizeOptions": [
+      25,
+      50,
+      100,
+      1000
+    ]
+  },
+  "hideExportButton": false
+}
