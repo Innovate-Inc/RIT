@@ -402,11 +402,11 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
             }else if(layID[1] == 'Food Processors'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Type_'];
             }else if(layID[1] == 'Institutions'){
-                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Website', 'Beds', 'Students', 'Group_', 'Level_', 'Classification', 'Est_Waste_MT_yr', 'Type_'];
+                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Telephone', 'Est_Waste_Ton_wk', 'Type_'];
             }else if(layID[1] == 'Restaurants'){
-                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Est__Waste_MT_yr', 'Type_'];
+                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Est_Waste_tons_wk', 'Type_'];
             }else if(layID[1] == 'Retail'){
-                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Website', 'Est__Waste_MT_yr', 'Type_'];
+                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Website', 'Est__Waste_Ton_wk', 'Type_'];
             }else if(layID[1] == 'Anaerobic Digesters'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Digester_Type', 'Biogas_Use', 'Co_Digestion', 'Capacity', 'Farm_Type', 'Type_'];
             }else if(layID[1] == 'BUD'){
@@ -417,6 +417,8 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Pounds_Distributed_Annually', 'Type_'];
             }else if(layID[1] == 'Grease Trap Waste'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Waste_Accepted', 'Type_'];
+            }else if(layID[1] == 'Hospitality'){
+                fieldnames = ['Company_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Phone_Number_Combined', 'Type_', 'Est_food_t_wk'];
             }else{
                 fLayer.fields.forEach(function (item, index, array) {
                     fieldnames.push(item.name);

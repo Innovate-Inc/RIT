@@ -606,7 +606,7 @@ css for the dijits
   position: absolute;
   cursor: pointer;
   border-radius: 4px;
-  background-color: rgba(0,0,0,0.2);
+  background-color:  rgba(0,0,0,0.2); 
 }
 .jimu-preload-widget-icon:hover{
   background-color: rgba(0,0,0,0.4);

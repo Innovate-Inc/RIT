@@ -328,9 +328,9 @@ define([
 
       _setElementsSize: function() {
         html.setStyle(this.logoNode, {
-          height: '30px',
+          height: '50px',
           minWidth: '30px',
-          marginTop: ((this.height - 30) / 2) + 'px'
+          marginTop: ((this.height - 50) / 2) + 'px'
         });
 
         html.setStyle(this.titleNode, {
@@ -412,7 +412,7 @@ define([
             this._hidePopupLink();
           }
           html.setStyle(this.logoNode, {
-            cursor: 'default'
+            cursor: 'pointer' // SDN Change from default.
           });
         }
       },
@@ -512,8 +512,8 @@ define([
           src: this.appConfig.logo ? this.appConfig.logo : this.folderUrl + 'images/app-logo.png',
           style: {
             width: '30px',
-            height: '30px',
-            marginTop: ((this.height - 30) / 2) + 'px'
+            height: '60px',
+            marginTop: ((this.height - 60) / 2) + 'px'
           }
         }, titleNode);
 
