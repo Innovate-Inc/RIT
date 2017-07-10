@@ -1,7 +1,8 @@
 define({
   root: ({
     label1: "3. Enter an Address:",
-    label2: "This is configurable."
+    label2: "This is configurable.",
+    downloadText: "Complete steps 1-3 to search for resources then find a download of your results at the bottom."
   }),
   "ar": 1,
   "cs": 1,

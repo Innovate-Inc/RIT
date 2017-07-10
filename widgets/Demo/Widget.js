@@ -1,9 +1,9 @@
-define(['dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/store/Memory", "dojo/_base/array", "esri/dijit/Geocoder", "dijit/form/HorizontalSlider",
+define(['dojo/dom','dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/store/Memory", "dojo/_base/array", "esri/dijit/Geocoder", "dijit/form/HorizontalSlider",
     "esri/layers/FeatureLayer", "esri/tasks/query", "dojo/query", "esri/geometry/Circle",
     "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer",
     "esri/config", "esri/Color", "dojo/dom", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on"],
-function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
+function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
     //To create a widget, you need to derive from BaseWidget.
     
     //var queryLayer;
@@ -16,6 +16,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
     var featLayerIndex =0;
     var goecoder;
     var mapClickHandler;
+
     return declare([BaseWidget], {
     // DemoWidget code goes here 
 
@@ -28,11 +29,12 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
 
     startup: function() {
       this.inherited(arguments);
-
+        totalResults = 0;
       //Setup geocode event
         geocoder = new Geocoder({
             arcgisGeocoder: {
-                placeholder: "Find a place"
+                placeholder: "Find a place",
+                sourceCountry: "US"
             },
             autoComplete: true,
             map: curMap
@@ -179,6 +181,10 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
     geocodeSelect: function (evt) {
         //evt.result.feature.geometry;
 
+        //keep adding to get total results
+        totalResults = 0;
+
+
         //Clear previous search
         for(var i=0; i<featLayerList.length; i++){
             featLayerList[i].clearSelection();
@@ -311,6 +317,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
 
                 featLayer.selectFeatures(query1, FeatureLayer.SELECTION_NEW, function (response) {
                     var feature;
+
                     var features = response.features;
                     console.log('Q Isues');
                     facilityName = organizeResults(response);
@@ -352,7 +359,10 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
         },1000);
         },function(){
             alert("here");
+
         });
+
+
         // add a click listener on the ID column
         //grid.on(".field-id:click", selectState);
         grid.on(".dgrid-row:click", selectState);
@@ -457,7 +467,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
                 // it needs to implement server side export
                 link.setAttribute("href", "http://www.example.com/export");
             }
-            link.innerHTML = "Export csv of " + fLayer.name;
+            link.innerHTML = "Export csv of " + fLayer.name + " (" + results.length + " Results)";
 
             var dd = dom.byId("downloads");
 
@@ -475,7 +485,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
         //queryLayer = [];
         buffDist = dom.byId("sliderValue").value;
         
-      console.log('onOpen');
+      console.log('onOpen Demo');
     },
 
     onClose: function(){
