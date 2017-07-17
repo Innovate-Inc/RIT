@@ -2,7 +2,7 @@ define({
   root: ({
     label1: "3. Enter an Address:",
     label2: "This is configurable.",
-    downloadText: "Complete steps 1-3 to search for resources then find a download of your results at the bottom."
+    downloadText: "Follow Steps 1-4 below to find the data you’re looking for. Don’t forget you can download search-specific data after performing a search, or you can download full datasets "
   }),
   "ar": 1,
   "cs": 1,

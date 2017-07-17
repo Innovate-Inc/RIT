@@ -2,8 +2,8 @@ define(['dojo/dom','dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/O
     "esri/layers/FeatureLayer", "esri/tasks/query", "dojo/query", "esri/geometry/Circle",
     "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer",
-    "esri/config", "esri/Color", "dojo/dom", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on"],
-function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
+    "esri/config", "esri/Color", "dojo/dom", "dojo/dom-construct", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on"],
+function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domConstruct, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
     //To create a widget, you need to derive from BaseWidget.
     
     //var queryLayer;
@@ -29,6 +29,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
     startup: function() {
       this.inherited(arguments);
+      self = this;
         totalResults = 0;
       //Setup geocode event
         geocoder = new Geocoder({
@@ -37,20 +38,40 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 sourceCountry: "US"
             },
             autoComplete: true,
-            map: curMap
+            map: this.map
         }, dom.byId("search"));
+        geocoder.startup();
       //this.mapIdNode.innerHTML = 'map id:' + this.map.id;
         //on select event for geocoding
         geocoder.on("select", this.geocodeSelect);
 
+        //geocoder.on("clear", this.clearSearch);
+
         //button onClicks
-        //on(btnClear, 'click', function(){
+        // on(btnClear, 'click', function(){
         //    alert(geocoder.value);
-        //    geocoder.focus();
+        //    //geocoder.focus();
         //    geocoder.clear();
-        //    alert(geocoder.value);
+        //    //alert(geocoder.value);
         //    //geocoder.value = "";
-        //});
+        //     //geocoder.destroy();
+        //
+        //     // var geocoderNode = domConstruct.create('div');
+        //     // domConstruct.place(geocoderNode, dom.byId('geocoder-area'));
+        //     //
+        //     //
+        //     // geocoder = new Geocoder({
+        //     //         arcgisGeocoder: {
+        //     //             placeholder: "Find a place",
+        //     //             sourceCountry: "US"
+        //     //         },
+        //     //         autoComplete: true,
+        //     //         map: curMap
+        //     //     }, geocoderNode);
+        //     // geocoder.startup();
+        //     // geocoder.on("select", self.geocodeSelect);
+        //
+        // });
         //on(btnSearch, 'click', function(){
         //    //highlight symbol
         //
@@ -166,6 +187,13 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         }
         //End LayerLise
          
+    },
+
+    clearSearch: function(){
+        console.log("Clear Search");
+        //geocoder.clear();
+        //geocoder.destroy();
+
     },
 
     mapClick: function (evt) {
@@ -356,6 +384,10 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 });
 
             }
+            if(curMap.extent != circle.getExtent()){
+                //zoom map to radius extent
+                curMap.setExtent(circle.getExtent(), true);
+            }
         },1000);
         },function(){
             alert("here");
@@ -475,7 +507,6 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             dd.appendChild(ddiv);
         }
         dojo.style("downloadLbl", "visibility", "visible");
-
     },
 
     onOpen: function () {
