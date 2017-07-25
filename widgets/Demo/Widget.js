@@ -16,6 +16,9 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     var featLayerIndex =0;
     var goecoder;
     var mapClickHandler;
+    var subCatObject = {};
+    //var csvCAFO = new Array;
+    //var csvHospitality = new Array;
 
     return declare([BaseWidget], {
     // DemoWidget code goes here 
@@ -29,6 +32,11 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
     startup: function() {
       this.inherited(arguments);
+
+      //setting up store arrays
+       // fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
+        //csvCAFO.push(fieldnames);
+
       self = this;
         totalResults = 0;
       //Setup geocode event
@@ -45,9 +53,14 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         //on select event for geocoding
         geocoder.on("select", this.geocodeSelect);
 
+        //set up download button
+        var downloadBtn = dom.byId("btnDLResults");
+        on(downloadBtn, 'click', this._prepDataForDownload);
+
         //geocoder.on("clear", this.clearSearch);
 
         //button onClicks
+        //on(dom.byId("btnClear"), 'click', this.clearSearch);
         // on(btnClear, 'click', function(){
         //    alert(geocoder.value);
         //    //geocoder.focus();
@@ -88,7 +101,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
 
         //add slider widget
-        var slider = new HorizontalSlider({
+        slider = new HorizontalSlider({
             name: "slider",
             value: 5,
             minimum: 1,
@@ -116,6 +129,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
          //Layer List
         var visible = [];
+        subCats = [];
         var layer = curMap.getLayer("P2I_web_service_2015_retail_2266");
         //alert(curMap.layerIds[1]);
         var items = arrayUtils.map(layer.layerInfos, function(info, index) {
@@ -125,7 +139,10 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
              //lChecked = visible;
             //alert(info.parentLayerId);
             if(info.parentLayerId == -1){
+                subCats.push(info.name);
+                subCatObject[info.name] = [];
                 if(!!info.subLayerIds) {
+
                     return "<div ><input type='checkbox' style='margin-right: 5px' class='group_layer'" + "' id='" + info.id + "' /><label for='" + info.id + "'>" + info.name + "</label></div>";
                 } else{
                     return "<div><input type='checkbox' style='margin-right: 5px' class='list_item'" + "' id='" + info.id + "' /><label for='" + info.id + "'>" + info.name + "</label></div>";
@@ -134,7 +151,12 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                //return "<div>"+ info.name +"</div>";
             }
             return  "<div class='sub_layer' style='display: none'><input type='checkbox' style='margin-right: 5px' class='list_item'"  + "' id='" + info.id + "'' /><label for='" + info.id + "'>" + info.name + "</label></div>";
+
           });
+
+        //prepare an array for each subCat to store result for download
+        this._prepareSubCatArrays;
+
 
           var ll = dom.byId("layer_list");
           ll.innerHTML = items.join(' ');
@@ -191,7 +213,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
     clearSearch: function(){
         console.log("Clear Search");
-        //geocoder.clear();
+        geocoder.clear();
+        slider.set('vaule', 5);
         //geocoder.destroy();
 
     },
@@ -394,7 +417,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
         });
 
-
+        console.log("this is here");
         // add a click listener on the ID column
         //grid.on(".field-id:click", selectState);
         grid.on(".dgrid-row:click", selectState);
@@ -430,13 +453,13 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
         function createCSV(fLayer, results){
 
+
             //get field names
             var featFieldNames = fLayer.fields;
             var fieldnames = [];
 
             var layID = fLayer.id.split('_');
-            //alert(layID[1]);
-            //(fLayer.name + "   " + layID[1]);
+
             if(layID[1] == 'CAFO'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
             }else if(layID[1] == 'Event Venues & Resorts'){
@@ -467,6 +490,9 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 });
             }
 
+
+
+
             //prepare CSV data
             var csvData = new Array();
             csvData.push(fieldnames);
@@ -478,35 +504,91 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 for (var i = 0; i < fieldnames.length; i++) {
                     data = data + '"' + item.attributes[fieldnames[i]] + '",'
                 }
-                csvData.push(data);
+                //csvData.push(data);
+                subCatObject[layID[1]].push(data);
             });
 
-            // put data array into file, name file and attach to link
-            var fileName =  layID[0] + ".csv";
-            var buffer = csvData.join("\n");
-            var blob = new Blob([buffer], {
-                "type": "text/csv;charset=utf8;"
-            });
-            var ddiv = document.createElement("div");
-            var link = document.createElement("a");
-
-            if (link.download !== undefined) { // feature detection
-                // Browsers that support HTML5 download attribute
-                link.setAttribute("href", window.URL.createObjectURL(blob));
-                link.setAttribute("download", fileName);
-            }
-            else {
-                // it needs to implement server side export
-                link.setAttribute("href", "http://www.example.com/export");
-            }
-            link.innerHTML = "Export csv of " + fLayer.name + " (" + results.length + " Results)";
-
-            var dd = dom.byId("downloads");
-
-            ddiv.appendChild(link);
-            dd.appendChild(ddiv);
+            // // put data array into file, name file and attach to link
+            // var fileName =  layID[0] + ".csv";
+            // var buffer = csvData.join("\n");
+            // var blob = new Blob([buffer], {
+            //     "type": "text/csv;charset=utf8;"
+            // });
+            // var ddiv = document.createElement("div");
+            // var link = document.createElement("a");
+            //
+            // if (link.download !== undefined) { // feature detection
+            //     // Browsers that support HTML5 download attribute
+            //     link.setAttribute("href", window.URL.createObjectURL(blob));
+            //     link.setAttribute("download", fileName);
+            // }
+            // else {
+            //     // it needs to implement server side export
+            //     link.setAttribute("href", "http://www.example.com/export");
+            // }
+            // link.innerHTML = "Export csv of " + fLayer.name + " (" + results.length + " Results)";
+            //
+            // var dd = dom.byId("downloads");
+            //
+            // ddiv.appendChild(link);
+            // dd.appendChild(ddiv);
         }
         dojo.style("downloadLbl", "visibility", "visible");
+    },
+      //method to prepare objects to store subcat data
+    _prepareSubCatArrays: function(catName, results, fieldnames){
+        results.forEach(function (item, index, array) {
+            var data = "";
+            for (var i = 0; i < fieldnames.length; i++) {
+                data = data + '"' + item.attributes[fieldnames[i]] + '",'
+            }
+            subCatObject[catName].push(data);
+            //csvHospitality.push(data);
+        });
+    },
+
+    _prepDataForDownload: function(){
+        console.log("download has been clicked");
+        console.log("This is CAFO", subCatObject);
+        //console.log("This is Hospitality", csvHospitality);
+
+       //loop through subcats and add results to UI
+        subCats.forEach(function(sb, index, array){
+            if(subCatObject[sb].length > 0){
+                console.log("if this then create csv");
+
+                // put data array into file, name file and attach to link
+                var fileName =  sb + ".csv";
+                var buffer = subCatObject[sb].join("\n");
+                var blob = new Blob([buffer], {
+                    "type": "text/csv;charset=utf8;"
+                });
+                var ddiv = document.createElement("div");
+                var link = document.createElement("a");
+
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    link.setAttribute("href", window.URL.createObjectURL(blob));
+                    link.setAttribute("download", fileName);
+                }
+                else {
+                    // it needs to implement server side export
+                    link.setAttribute("href", "http://www.example.com/export");
+                }
+                link.innerHTML = "Export csv of " + sb + " (" + subCatObject[sb].length + " Results)";
+
+                var dd = dom.byId("downloads");
+
+                ddiv.appendChild(link);
+                dd.appendChild(ddiv);
+
+
+            }
+        });
+
+
+
+
     },
 
     onOpen: function () {
