@@ -1,9 +1,9 @@
-define(['dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/store/Memory", "dojo/_base/array", "esri/dijit/Geocoder", "dijit/form/HorizontalSlider",
+define(['dojo/dom','dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/store/Memory", "dojo/_base/array", "esri/dijit/Geocoder", "dijit/form/HorizontalSlider",
     "esri/layers/FeatureLayer", "esri/tasks/query", "dojo/query", "esri/geometry/Circle",
     "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer",
-    "esri/config", "esri/Color", "dojo/dom", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on"],
-function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
+    "esri/config", "esri/Color", "dojo/dom", "dojo/dom-construct", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on"],
+function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domConstruct, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
     //To create a widget, you need to derive from BaseWidget.
     
     //var queryLayer;
@@ -16,6 +16,10 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
     var featLayerIndex =0;
     var goecoder;
     var mapClickHandler;
+    var subCatObject = {};
+    //var csvCAFO = new Array;
+    //var csvHospitality = new Array;
+
     return declare([BaseWidget], {
     // DemoWidget code goes here 
 
@@ -29,26 +33,47 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
     startup: function() {
       this.inherited(arguments);
 
+      //setting up store arrays
+       // fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
+        //csvCAFO.push(fieldnames);
+        curMap = this.map;
+      self = this;
+        totalResults = 0;
       //Setup geocode event
         geocoder = new Geocoder({
             arcgisGeocoder: {
-                placeholder: "Find a place"
+                placeholder: "Find a place",
+                sourceCountry: "US"
             },
             autoComplete: true,
-            map: curMap
+            map: this.map
         }, dom.byId("search"));
+        geocoder.startup();
       //this.mapIdNode.innerHTML = 'map id:' + this.map.id;
         //on select event for geocoding
         geocoder.on("select", this.geocodeSelect);
 
+        //set up download button
+        var downloadBtn = dom.byId("btnDLResults");
+        on(downloadBtn, 'click', this._prepDataForDownload);
+
+        //geocoder.on("clear", this.clearSearch);
+
         //button onClicks
-        //on(btnClear, 'click', function(){
-        //    alert(geocoder.value);
-        //    geocoder.focus();
-        //    geocoder.clear();
-        //    alert(geocoder.value);
-        //    //geocoder.value = "";
-        //});
+        //on(dom.byId("btnClear"), 'click', this.clearSearch);
+        on(btnClear, 'click', function(){
+           console.log("clear amp");
+
+            //Clear previous search
+            for(var i=0; i<featLayerList.length; i++){
+                featLayerList[i].clearSelection();
+                curMap.removeLayer(featLayerList[i]);
+            }
+            curMap.graphics.clear();
+            dojo.style("downloadLbl", "visibility", "hidden"); //grid  downloads
+            dojo.style("grid", "visibility", "hidden");
+            dojo.style("downloads", "visibility", "hidden");
+        });
         //on(btnSearch, 'click', function(){
         //    //highlight symbol
         //
@@ -65,7 +90,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
 
 
         //add slider widget
-        var slider = new HorizontalSlider({
+        slider = new HorizontalSlider({
             name: "slider",
             value: 5,
             minimum: 1,
@@ -89,10 +114,11 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
             }
         });
 
-         curMap = this.map
+
 
          //Layer List
         var visible = [];
+        subCats = [];
         var layer = curMap.getLayer("P2I_web_service_2015_retail_2266");
         //alert(curMap.layerIds[1]);
         var items = arrayUtils.map(layer.layerInfos, function(info, index) {
@@ -102,7 +128,10 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
              //lChecked = visible;
             //alert(info.parentLayerId);
             if(info.parentLayerId == -1){
+                subCats.push(info.name);
+                subCatObject[info.name] = [];
                 if(!!info.subLayerIds) {
+
                     return "<div ><input type='checkbox' style='margin-right: 5px' class='group_layer'" + "' id='" + info.id + "' /><label for='" + info.id + "'>" + info.name + "</label></div>";
                 } else{
                     return "<div><input type='checkbox' style='margin-right: 5px' class='list_item'" + "' id='" + info.id + "' /><label for='" + info.id + "'>" + info.name + "</label></div>";
@@ -111,7 +140,12 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
                //return "<div>"+ info.name +"</div>";
             }
             return  "<div class='sub_layer' style='display: none'><input type='checkbox' style='margin-right: 5px' class='list_item'"  + "' id='" + info.id + "'' /><label for='" + info.id + "'>" + info.name + "</label></div>";
+
           });
+
+        //prepare an array for each subCat to store result for download
+        this._prepareSubCatArrays;
+
 
           var ll = dom.byId("layer_list");
           ll.innerHTML = items.join(' ');
@@ -166,6 +200,14 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
          
     },
 
+    clearSearch: function(){
+        console.log("Clear Search");
+        geocoder.clear();
+        slider.set('vaule', 5);
+        //geocoder.destroy();
+
+    },
+
     mapClick: function (evt) {
 
     },
@@ -177,7 +219,15 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
     },
 
     geocodeSelect: function (evt) {
-        //evt.result.feature.geometry;
+        //Clear current Lists
+        subCats.forEach(function(sb, index, array){
+            if(subCatObject[sb].length > 0){
+                subCatObject[sb] = [];
+            }
+        });
+
+        //keep adding to get total results
+        totalResults = 0;
 
         //Clear previous search
         for(var i=0; i<featLayerList.length; i++){
@@ -311,6 +361,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
 
                 featLayer.selectFeatures(query1, FeatureLayer.SELECTION_NEW, function (response) {
                     var feature;
+
                     var features = response.features;
                     console.log('Q Isues');
                     facilityName = organizeResults(response);
@@ -349,10 +400,17 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
                 });
 
             }
+            if(curMap.extent != circle.getExtent()){
+                //zoom map to radius extent
+                curMap.setExtent(circle.getExtent(), true);
+            }
         },1000);
         },function(){
             alert("here");
+
         });
+
+        console.log("this is here");
         // add a click listener on the ID column
         //grid.on(".field-id:click", selectState);
         grid.on(".dgrid-row:click", selectState);
@@ -393,8 +451,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
             var fieldnames = [];
 
             var layID = fLayer.id.split('_');
-            //alert(layID[1]);
-            //(fLayer.name + "   " + layID[1]);
+
             if(layID[1] == 'CAFO'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
             }else if(layID[1] == 'Event Venues & Resorts'){
@@ -426,8 +483,8 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
             }
 
             //prepare CSV data
-            var csvData = new Array();
-            csvData.push(fieldnames);
+            // var csvData = new Array();
+            // csvData.push(fieldnames);
 
             //Load data into array
             results.forEach(function (item, index, array) {
@@ -436,36 +493,89 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
                 for (var i = 0; i < fieldnames.length; i++) {
                     data = data + '"' + item.attributes[fieldnames[i]] + '",'
                 }
-                csvData.push(data);
+                //csvData.push(data);
+                subCatObject[layID[1]].push(data);
             });
 
-            // put data array into file, name file and attach to link
-            var fileName =  layID[0] + ".csv";
-            var buffer = csvData.join("\n");
-            var blob = new Blob([buffer], {
-                "type": "text/csv;charset=utf8;"
-            });
-            var ddiv = document.createElement("div");
-            var link = document.createElement("a");
-
-            if (link.download !== undefined) { // feature detection
-                // Browsers that support HTML5 download attribute
-                link.setAttribute("href", window.URL.createObjectURL(blob));
-                link.setAttribute("download", fileName);
-            }
-            else {
-                // it needs to implement server side export
-                link.setAttribute("href", "http://www.example.com/export");
-            }
-            link.innerHTML = "Export csv of " + fLayer.name;
-
-            var dd = dom.byId("downloads");
-
-            ddiv.appendChild(link);
-            dd.appendChild(ddiv);
+            // // put data array into file, name file and attach to link
+            // var fileName =  layID[0] + ".csv";
+            // var buffer = csvData.join("\n");
+            // var blob = new Blob([buffer], {
+            //     "type": "text/csv;charset=utf8;"
+            // });
+            // var ddiv = document.createElement("div");
+            // var link = document.createElement("a");
+            //
+            // if (link.download !== undefined) { // feature detection
+            //     // Browsers that support HTML5 download attribute
+            //     link.setAttribute("href", window.URL.createObjectURL(blob));
+            //     link.setAttribute("download", fileName);
+            // }
+            // else {
+            //     // it needs to implement server side export
+            //     link.setAttribute("href", "http://www.example.com/export");
+            // }
+            // link.innerHTML = "Export csv of " + fLayer.name + " (" + results.length + " Results)";
+            //
+            // var dd = dom.byId("downloads");
+            //
+            // ddiv.appendChild(link);
+            // dd.appendChild(ddiv);
         }
         dojo.style("downloadLbl", "visibility", "visible");
+        dojo.style("grid", "visibility", "visible");
+    },
+      //method to prepare objects to store subcat data
+    _prepareSubCatArrays: function(catName, results, fieldnames){
+        results.forEach(function (item, index, array) {
+            var data = "";
+            for (var i = 0; i < fieldnames.length; i++) {
+                data = data + '"' + item.attributes[fieldnames[i]] + '",'
+            }
+            subCatObject[catName].push(data);
+            //csvHospitality.push(data);
+        });
+    },
 
+    _prepDataForDownload: function(){
+        console.log("download has been clicked");
+        console.log("This is CAFO", subCatObject);
+        //console.log("This is Hospitality", csvHospitality);
+        dom.byId("downloads").innerHTML = "";
+       //loop through subcats and add results to UI
+        subCats.forEach(function(sb, index, array){
+            if(subCatObject[sb].length > 0){
+                console.log("if this then create csv");
+
+                // put data array into file, name file and attach to link
+                var fileName =  sb + ".csv";
+                var buffer = subCatObject[sb].join("\n");
+                var blob = new Blob([buffer], {
+                    "type": "text/csv;charset=utf8;"
+                });
+                var ddiv = document.createElement("div");
+                var link = document.createElement("a");
+
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    link.setAttribute("href", window.URL.createObjectURL(blob));
+                    link.setAttribute("download", fileName);
+                }
+                else {
+                    // it needs to implement server side export
+                    link.setAttribute("href", "http://www.example.com/export");
+                }
+                link.innerHTML = "Export csv of " + sb + " (" + subCatObject[sb].length + " Results)";
+
+                var dd = dom.byId("downloads");
+
+                ddiv.appendChild(link);
+                dd.appendChild(ddiv);
+
+
+            }
+        });
+        dojo.style("downloads", "visibility", "visible");
     },
 
     onOpen: function () {
@@ -475,7 +585,7 @@ function (declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, H
         //queryLayer = [];
         buffDist = dom.byId("sliderValue").value;
         
-      console.log('onOpen');
+      console.log('onOpen Demo');
     },
 
     onClose: function(){

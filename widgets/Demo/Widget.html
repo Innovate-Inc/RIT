@@ -1,5 +1,7 @@
 <div>
+    <div style="text-align: right"><a href="https://www.rit.edu/affiliate/nysp2i/food/self-declaration-survey">Add your company to the Organic Resourse Locator</a></div>
     <div style="text-align: right"><a href="mailto:allp2i@rit.edu?subject=Organic Resource Locator">Questions or Comments?</a></div><br />
+    <div><p>${nls.downloadText}<a href=''>here</a>.</p></div><br />
 
     <div style="margin-bottom: 5px"><b style="font-size: small">1. Choose Layer: </b></div><span id="layer_list"></span><br />
     <br />
@@ -7,19 +9,21 @@
     <div id="slider"></div>
     <br />
     <div style="font-weight:700; font-size: small">${nls.label1}</div>
-    <div>
+    <div id="geocoder-area">
         <div id="search"></div>
-        <!--<button id="btnClear" data-dojo-type="dijit/form/Button">Clear</button>-->
+        <div style="position: relative; top: -25px; left: 230px;"><button id="btnClear" data-dojo-type="dijit/form/Button">Clear Map</button></div>
         <!--<button id="btnSearch" data-dojo-type="dijit/form/Button">Search</button>-->
     </div>
     <div>
-        <div style="position: relative; top: -7px; left: 10px;"><img src="./widgets/Demo/images/arrow2.png" style="height: 25px;">Click to search again</div>
+        <div style="position: relative; top: -25px; left: 10px;"><img src="./widgets/Demo/images/arrow2.png" style="height: 25px;">Click to search again</div>
     </div>
-    <br />
-        <div id="messages"></div><br />
+        <div id="messages"></div>
+        <div id="totalResultsDiv"></div>
         <div id="grid" style="height: 200px"></div><br />
         <!--<button id="exportAll" onclick="window.exportData()"  data-dojo-type="dijit/form/Button" type="button">Export all to CSV</button><br />-->
-        <div id="downloadLbl" style="visibility:hidden" ><b style="font-size: small">4. Download Search Results: </b></div>
+        <!--<button id="btnDownloads" data-dojo-type="dijit/form/Button">Clear</button>-->
+        <div id="downloadLbl" style="visibility:hidden" ><b style="font-size: small">4. Download Search Results: </b><button id="btnDLResults" data-dojo-type="dijit/form/Button" style="background-color: bisque;">Download Results</button></div>
+
         <div id="downloads">
 
         </div>
