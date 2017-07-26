@@ -36,7 +36,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
       //setting up store arrays
        // fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
         //csvCAFO.push(fieldnames);
-
+        curMap = this.map;
       self = this;
         totalResults = 0;
       //Setup geocode event
@@ -61,30 +61,19 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
         //button onClicks
         //on(dom.byId("btnClear"), 'click', this.clearSearch);
-        // on(btnClear, 'click', function(){
-        //    alert(geocoder.value);
-        //    //geocoder.focus();
-        //    geocoder.clear();
-        //    //alert(geocoder.value);
-        //    //geocoder.value = "";
-        //     //geocoder.destroy();
-        //
-        //     // var geocoderNode = domConstruct.create('div');
-        //     // domConstruct.place(geocoderNode, dom.byId('geocoder-area'));
-        //     //
-        //     //
-        //     // geocoder = new Geocoder({
-        //     //         arcgisGeocoder: {
-        //     //             placeholder: "Find a place",
-        //     //             sourceCountry: "US"
-        //     //         },
-        //     //         autoComplete: true,
-        //     //         map: curMap
-        //     //     }, geocoderNode);
-        //     // geocoder.startup();
-        //     // geocoder.on("select", self.geocodeSelect);
-        //
-        // });
+        on(btnClear, 'click', function(){
+           console.log("clear amp");
+
+            //Clear previous search
+            for(var i=0; i<featLayerList.length; i++){
+                featLayerList[i].clearSelection();
+                curMap.removeLayer(featLayerList[i]);
+            }
+            curMap.graphics.clear();
+            dojo.style("downloadLbl", "visibility", "hidden"); //grid  downloads
+            dojo.style("grid", "visibility", "hidden");
+            dojo.style("downloads", "visibility", "hidden");
+        });
         //on(btnSearch, 'click', function(){
         //    //highlight symbol
         //
@@ -125,7 +114,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             }
         });
 
-         curMap = this.map
+
 
          //Layer List
         var visible = [];
@@ -230,11 +219,15 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     },
 
     geocodeSelect: function (evt) {
-        //evt.result.feature.geometry;
+        //Clear current Lists
+        subCats.forEach(function(sb, index, array){
+            if(subCatObject[sb].length > 0){
+                subCatObject[sb] = [];
+            }
+        });
 
         //keep adding to get total results
         totalResults = 0;
-
 
         //Clear previous search
         for(var i=0; i<featLayerList.length; i++){
@@ -453,7 +446,6 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
         function createCSV(fLayer, results){
 
-
             //get field names
             var featFieldNames = fLayer.fields;
             var fieldnames = [];
@@ -490,12 +482,9 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 });
             }
 
-
-
-
             //prepare CSV data
-            var csvData = new Array();
-            csvData.push(fieldnames);
+            // var csvData = new Array();
+            // csvData.push(fieldnames);
 
             //Load data into array
             results.forEach(function (item, index, array) {
@@ -534,6 +523,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             // dd.appendChild(ddiv);
         }
         dojo.style("downloadLbl", "visibility", "visible");
+        dojo.style("grid", "visibility", "visible");
     },
       //method to prepare objects to store subcat data
     _prepareSubCatArrays: function(catName, results, fieldnames){
@@ -551,7 +541,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         console.log("download has been clicked");
         console.log("This is CAFO", subCatObject);
         //console.log("This is Hospitality", csvHospitality);
-
+        dom.byId("downloads").innerHTML = "";
        //loop through subcats and add results to UI
         subCats.forEach(function(sb, index, array){
             if(subCatObject[sb].length > 0){
@@ -585,10 +575,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
             }
         });
-
-
-
-
+        dojo.style("downloads", "visibility", "visible");
     },
 
     onOpen: function () {
