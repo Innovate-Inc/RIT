@@ -10,6 +10,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     var curMap;
     var selTool;
     var buffDist;  //Search Distance
+    var wasteValue; //Search waste value
     var lChecked = []; //Layers that are checked
     //var query = new Query();
     var featLayerList = [];
@@ -114,6 +115,24 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             }
         });
 
+        //Estimated Waste Slider
+        wasteSlider = new HorizontalSlider({
+            name: "estimatedWaste",
+            value: 5,
+            minimum: 1,
+            maximum: 250,
+            discreteValues: 250,
+            intermediateChanges: false,
+            style: "width:300px;",
+            onChange: function (value) {
+                dom.byId("wasteSlider").value = value;
+                wasteValue = value;
+
+            }
+        }, "wasteSlider").startup();
+
+        //dojo.style("grid", "visibility", "visible");
+
 
 
          //Layer List
@@ -185,7 +204,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             arrayUtils.forEach(inputs, function(input) {
 
                 if (input.checked) {
-                visible.push(input.id);
+                    visible.push(input.id);
+
                 }
             });
           //if there aren't any layers visible set the array to be -1
@@ -195,15 +215,36 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             lChecked = visible;
             //alert( "list  " + lChecked);
             layer.setVisibleLayers(visible);
+            self._wasteFilterVisibility(visible, layer);
+
         }
         //End LayerLise
          
     },
 
+    _wasteFilterVisibility: function(visible, layer){
+        var wasteFilterLayers = self.config.wasterFilterLayers;
+        var fiterVisible = false;
+        if(visible.length > 0 && visible[0] != -1){
+            visible.forEach(function(id){
+
+                if(wasteFilterLayers.includes(layer.layerInfos[id].name)){
+                    console.log("yep, make filter visible");
+                    dojo.style("wasteFilter", "display", "block");
+                    fiterVisible = true;
+                }
+            });
+        }
+        if(!fiterVisible){
+            dojo.style("wasteFilter", "display", "none");
+        }
+    },
+
     clearSearch: function(){
         console.log("Clear Search");
         geocoder.clear();
-        slider.set('vaule', 5);
+        slider.set('value', 5);
+        wasteSlider.set('value', 5);
         //geocoder.destroy();
 
     },
@@ -282,6 +323,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         var query1 = new Query();
         //query1.geometry = circle.getExtent();
         query1.geometry = graphic.geometry;
+        //Add waste value to look for
 
 
         //zoom map to radius extent
