@@ -1,3 +1,36 @@
 {
-	"configText":"abcdefg"
+	"configText":"abcdefg",
+	"wasterFilterLayers": [
+		"cattle",
+		"dairy",
+		"heifers",
+		"horses",
+		"other",
+		"poultry",
+		"sheep",
+		"swine",
+		"Hospitality",
+		"bakery / grains",
+		"beverages",
+		"brewery",
+		"brewery",
+		"coffee / tea",
+		"dairy",
+		"distillery",
+		"fruit / vegetables",
+		"meat / seafood",
+		"miscellaneous",
+		"sauces / dressings",
+		"winery",
+		"Restaurants",
+		"colleges & universities",
+		"correctional facilities",
+		"hospital",
+		"military bases",
+		"nursing homes",
+		"big box",
+		"convenience stores",
+		"supermarkets"
+	]
+
 }

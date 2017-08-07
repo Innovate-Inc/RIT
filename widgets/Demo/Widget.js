@@ -10,6 +10,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     var curMap;
     var selTool;
     var buffDist;  //Search Distance
+    var wasteValue; //Search waste value
+    var wasteLogic = '>=';
     var lChecked = []; //Layers that are checked
     //var query = new Query();
     var featLayerList = [];
@@ -114,6 +116,37 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             }
         });
 
+        //Estimated Waste Slider
+        wasteSlider = new HorizontalSlider({
+            name: "estimatedWaste",
+            value: 0,
+            minimum: 1,
+            maximum: 250,
+            discreteValues: 250,
+            intermediateChanges: false,
+            style: "width:300px;",
+            onChange: function (value) {
+                dom.byId("wasteSliderValue").value = value;
+                wasteValue = value;
+
+            }
+        }, "wasteSlider").startup();
+
+        var estimatedWasteText = dom.byId("wasteSliderValue");
+        on(estimatedWasteText, "input", function(){
+            if(distText.value <= 250){
+                dijit.byId("wasteSlider").set("value", estimatedWasteText.value);
+            }else{
+                dijit.byId("wasteSlider").set("value", 250);
+            }
+        });
+        //Get value from waste logic dropdown
+        var estimatedWasteLogic = dom.byId("estimatedWasteSelect");
+        on(estimatedWasteLogic, "change", function(evt){
+            console.log(evt.target.value);
+            wasteLogic = evt.target.value;
+        });
+
 
 
          //Layer List
@@ -185,7 +218,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             arrayUtils.forEach(inputs, function(input) {
 
                 if (input.checked) {
-                visible.push(input.id);
+                    visible.push(input.id);
+
                 }
             });
           //if there aren't any layers visible set the array to be -1
@@ -195,15 +229,38 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             lChecked = visible;
             //alert( "list  " + lChecked);
             layer.setVisibleLayers(visible);
+            self._wasteFilterVisibility(visible, layer);
+
         }
         //End LayerLise
          
     },
 
+    _wasteFilterVisibility: function(visible, layer){
+        var wasteFilterLayers = self.config.wasterFilterLayers;
+        var fiterVisible = false;
+        if(visible.length > 0 && visible[0] != -1){
+            visible.forEach(function(id){
+
+                if(wasteFilterLayers.includes(layer.layerInfos[id].name)){
+                    console.log("yep, make filter visible");
+                    dojo.style("wasteFilter", "display", "block");
+                    fiterVisible = true;
+                }else{
+                    dojo.style("wasteFilter", "display", "none");
+                }
+            });
+        }
+        if(!fiterVisible){
+            dojo.style("wasteFilter", "display", "none");
+        }
+    },
+
     clearSearch: function(){
         console.log("Clear Search");
         geocoder.clear();
-        slider.set('vaule', 5);
+        slider.set('value', 5);
+        wasteSlider.set('value', 5);
         //geocoder.destroy();
 
     },
@@ -219,6 +276,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     },
 
     geocodeSelect: function (evt) {
+
         //Clear current Lists
         subCats.forEach(function(sb, index, array){
             if(subCatObject[sb].length > 0){
@@ -274,14 +332,23 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             radius: buffDist,
             radiusUnit: "esriMiles"
         });
+
         //thisMap.graphics.clear();
         curMap.infoWindow.hide();
         var graphic = new Graphic(circle, circleSymb);
         curMap.graphics.add(graphic);
 
         var query1 = new Query();
+        //set waste filter
+        var wasteStatus = domStyle.get("wasteFilter", "display");
+        if(wasteStatus == 'block'){
+            query1.where = "Est_Waste_Ton_wk" + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
+            console.log( query1.where);
+        }
+
         //query1.geometry = circle.getExtent();
         query1.geometry = graphic.geometry;
+        //Add waste value to look for
 
 
         //zoom map to radius extent
@@ -481,7 +548,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     fieldnames.push(item.name);
                 });
             }
-
+            subCatObject[layID[1]].push(fieldnames);
             //prepare CSV data
             // var csvData = new Array();
             // csvData.push(fieldnames);
