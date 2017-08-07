@@ -12,8 +12,12 @@
     <br />
     <div id="wasteFilter" style="display: none">
         <div style="margin-bottom: 5px;">
-            <div style="margin-bottom: 5px"><b style="font-size: small">   Estimated waste per year</b></div>
-            <p><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  value="5" min="1" max="250"/>&nbsp;Tons per year</p>
+            <div style="margin-bottom: 5px"><b style="font-size: small">   Estimated Waste Per Week</b></div>
+
+            <p><select id="estimatedWasteSelect">
+                <option value=">=">Greater than or equal to</option>
+                <option value="<=">Less than or equal to</option>
+            </select><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  style="width: 50px" value="0" min="0" max="250"/>&nbsp;Tons Per Week</p>
         </div>
         <div id="wasteSlider"></div>
     </div>
