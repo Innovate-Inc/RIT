@@ -243,16 +243,25 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             visible.forEach(function(id){
 
                 if(wasteFilterLayers.includes(layer.layerInfos[id].name)){
-                    console.log("yep, make filter visible");
+                    //console.log("yep, make filter visible");
                     dojo.style("wasteFilter", "display", "block");
                     fiterVisible = true;
                 }else{
-                    dojo.style("wasteFilter", "display", "none");
+                    //dojo.style("wasteFilter", "display", "none");
                 }
             });
         }
         if(!fiterVisible){
             dojo.style("wasteFilter", "display", "none");
+        }
+    },
+
+    _addWasteFilter: function(layer, element){
+        var wasteFilterLayers = self.config.wasterFilterLayers;
+        if(wasteFilterLayers.includes(layer.layerInfos[element].name)){
+            return true;
+        }else{
+            return false;
         }
     },
 
@@ -341,10 +350,6 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         var query1 = new Query();
         //set waste filter
         var wasteStatus = domStyle.get("wasteFilter", "display");
-        if(wasteStatus == 'block'){
-            query1.where = "Est_Waste_Ton_wk" + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
-            console.log( query1.where);
-        }
 
         //query1.geometry = circle.getExtent();
         query1.geometry = graphic.geometry;
@@ -425,6 +430,12 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 var nullSymbol = new SimpleMarkerSymbol().setSize(0);
                 featLayer.setRenderer(new SimpleRenderer(nullSymbol));
                 curMap.addLayer(featLayer);
+
+                var applyFilter = self._addWasteFilter(layer, element);
+                if(applyFilter){
+                    query1.where = "Est_Waste_Ton_wk" + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
+                    console.log( query1.where);
+                }
 
                 featLayer.selectFeatures(query1, FeatureLayer.SELECTION_NEW, function (response) {
                     var feature;
