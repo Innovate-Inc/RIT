@@ -2,8 +2,8 @@ define(['dojo/dom','dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/O
     "esri/layers/FeatureLayer", "esri/tasks/query", "dojo/query", "esri/geometry/Circle",
     "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer",
-    "esri/config", "esri/Color", "dojo/dom", "dojo/dom-construct", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on"],
-function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domConstruct, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on) {
+    "esri/config", "esri/Color", "dojo/dom", "dojo/dom-construct", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on", "jimu/LayerInfos/LayerInfos", "dojo/_base/lang"],
+function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domConstruct, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on, LayerInfos, lang) {
     //To create a widget, you need to derive from BaseWidget.
     
     //var queryLayer;
@@ -19,6 +19,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     var goecoder;
     var mapClickHandler;
     var subCatObject = {};
+    //var pointOnMap = null;
     //var csvCAFO = new Array;
     //var csvHospitality = new Array;
 
@@ -274,17 +275,18 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
     },
 
-    mapClick: function (evt) {
-
-    },
-
     selectInBuffer: function (response) {
         //var feature;
         //var features = response.features;
         //alert(features.length + " features");
     },
 
-    geocodeSelect: function (evt) {
+    geocodeSelect: function(evt){
+        var point = evt.result.feature.geometry;
+        self.geocodeSelect1(point);
+    },
+
+    geocodeSelect1: function (point) {
 
         //Clear current Lists
         subCats.forEach(function(sb, index, array){
@@ -315,7 +317,13 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             return;
         }
         //get point where mouse clicked
-        var point = evt.result.feature.geometry;
+        // var point;
+        // if(pointOnMap){
+        //     var point = pointOnMap;
+        // }else{
+        //     point = evt.result.feature.geometry;
+        // }
+
         //Clear graphics on map and add graphic where user clicked
 
         var symbol = new SimpleMarkerSymbol().setStyle(
@@ -662,8 +670,57 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         curMap = this.map;
         //queryLayer = [];
         buffDist = dom.byId("sliderValue").value;
+
+        var addressToggle =  dom.byId("btnGetAdd");
+        on(addressToggle, "click", this.addToggle);
+
         
       console.log('onOpen Demo');
+    },
+
+    mapClick: function(evt){
+
+        var point = evt.mapPoint;
+        console.log("Clicked on Map", point);
+        //geocoder.value = point;
+        //pointOnMap = evt.mapPoint;
+
+        self.geocodeSelect1(point);
+    },
+
+    addToggle: function(evt){
+        //console.log("Get Address from Map", evt);
+        var addressToggle =  dom.byId("btnGetAdd");
+        if(domStyle.get(addressToggle, 'border-style') == 'inset'){
+            domStyle.set(addressToggle, 'border-style', 'outset');
+            self._managePopups(true);
+            if(signal){
+                signal.remove();
+            }
+
+        }else{
+            domStyle.set(addressToggle, 'border-style', 'inset');
+            self._managePopups(false);
+            signal = on(curMap, 'click', self.mapClick);
+        }
+
+
+    },
+
+    _managePopups: function(dePopups){
+        LayerInfos.getInstance(curMap, curMap.itemInfo).then(lang.hitch(function(layerInfosObject) {
+
+            layerInfosObject.traversal(function(layerInfo) {
+                //console.log(layerInfo.title);
+                if(layerInfo.newSubLayers == 0){
+                    if(dePopups){
+                        layerInfo.enablePopup();
+                    }else{
+                        layerInfo.disablePopup();
+                    }
+                }
+            });
+        }));
     },
 
     onClose: function(){
