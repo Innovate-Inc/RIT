@@ -6,4 +6,12 @@
 .sub_layer{
   margin-left: 20px;
 }
+.simpleGeocoder .esriGeocoder{
+  /*margin-left: 30px;*/
+}
+
+.btnInset{
+  border: inset;
+}
+
 
