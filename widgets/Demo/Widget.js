@@ -686,6 +686,14 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         //pointOnMap = evt.mapPoint;
 
         self.geocodeSelect1(point);
+
+        var addressToggle =  dom.byId("btnGetAdd");
+        domStyle.set(addressToggle, 'border-style', 'outset');
+        self._managePopups(true);
+        if(signal){
+            signal.remove();
+        }
+
     },
 
     addToggle: function(evt){
