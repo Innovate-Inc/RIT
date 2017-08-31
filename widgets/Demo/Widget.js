@@ -19,7 +19,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     var goecoder;
     var mapClickHandler;
     var subCatObject = {};
-    //var pointOnMap = null;
+    var pointOnMap = null;
     //var csvCAFO = new Array;
     //var csvHospitality = new Array;
 
@@ -40,8 +40,14 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
        // fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
         //csvCAFO.push(fieldnames);
         curMap = this.map;
-      self = this;
+        self = this;
         totalResults = 0;
+
+        var symbol = new SimpleMarkerSymbol().setStyle(
+            SimpleMarkerSymbol.STYLE_SQUARE).setColor(
+            new Color([255, 0, 0, 0.5])
+        );
+
       //Setup geocode event
         geocoder = new Geocoder({
             arcgisGeocoder: {
@@ -49,12 +55,16 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 sourceCountry: "US"
             },
             autoComplete: true,
-            map: this.map
+            map: this.map,
+            highlightLocation: true,
+            autoNavigate: false,
+            symbol: symbol
         }, dom.byId("search"));
         geocoder.startup();
       //this.mapIdNode.innerHTML = 'map id:' + this.map.id;
+
         //on select event for geocoding
-        geocoder.on("select", this.geocodeSelect);
+        //geocoder.on("select", this.geocodeSelect);
 
         //set up download button
         var downloadBtn = dom.byId("btnDLResults");
@@ -326,12 +336,12 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
         //Clear graphics on map and add graphic where user clicked
 
-        var symbol = new SimpleMarkerSymbol().setStyle(
-            SimpleMarkerSymbol.STYLE_SQUARE).setColor(
-            new Color([255, 0, 0, 0.5])
-        );
-        var graphic = new Graphic(point, symbol);
-        curMap.graphics.add(graphic);
+        // var symbol = new SimpleMarkerSymbol().setStyle(
+        //     SimpleMarkerSymbol.STYLE_SQUARE).setColor(
+        //     new Color([255, 0, 0, 0.5])
+        // );
+        // var graphic = new Graphic(point, symbol);
+        // curMap.graphics.add(graphic);
         //Add buffer of users specified distance
         var circleSymb = new SimpleFillSymbol(
             SimpleFillSymbol.STYLE_NULL,
@@ -674,25 +684,57 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         var addressToggle =  dom.byId("btnGetAdd");
         on(addressToggle, "click", this.addToggle);
 
+        var runSearchBtn =  dom.byId("runBtn");
+        on(runSearchBtn, "click", this.runSearch);
         
       console.log('onOpen Demo');
+    },
+
+    runSearch: function(){
+
+        console.log("yo this runs the search", geocoder.results);
+        var addressToggle =  dom.byId("btnGetAdd");
+        if(domStyle.get(addressToggle, 'border-style') == 'inset'){
+            //get from mapClick Point
+            self.geocodeSelect1(pointOnMap);
+
+            domStyle.set(addressToggle, 'border-style', 'outset');
+            self._managePopups(true);
+            if(signal){
+                signal.remove();
+            }
+
+        }else if (geocoder.results.length > 0) {
+
+            //get from gocoder
+            var point = geocoder.results[0].feature.geometry;
+            pointOnMap = null;
+            self.geocodeSelect1(point);
+        }else if(pointOnMap){
+            self.geocodeSelect1(pointOnMap);
+        }else{
+            alert("Please select a location");
+            console.log("There is nonthing");
+        }
+
     },
 
     mapClick: function(evt){
 
         var point = evt.mapPoint;
         console.log("Clicked on Map", point);
+        pointOnMap = point;
         //geocoder.value = point;
         //pointOnMap = evt.mapPoint;
 
-        self.geocodeSelect1(point);
-
-        var addressToggle =  dom.byId("btnGetAdd");
-        domStyle.set(addressToggle, 'border-style', 'outset');
-        self._managePopups(true);
-        if(signal){
-            signal.remove();
-        }
+        //self.geocodeSelect1(point);
+        //Add graphic
+        var symbol = new SimpleMarkerSymbol().setStyle(
+            SimpleMarkerSymbol.STYLE_SQUARE).setColor(
+            new Color([255, 0, 0, 0.5])
+        );
+        var graphic = new Graphic(point, symbol);
+        curMap.graphics.add(graphic);
 
     },
 
@@ -710,6 +752,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             domStyle.set(addressToggle, 'border-style', 'inset');
             self._managePopups(false);
             signal = on(curMap, 'click', self.mapClick);
+            geocoder.clear();
         }
 
 
