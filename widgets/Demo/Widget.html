@@ -5,35 +5,36 @@
 
     <div style="margin-bottom: 5px"><b style="font-size: small">1. Choose Layer: </b></div><span id="layer_list"></span><br />
     <br />
-    <div style="margin-bottom: 5px"><div style="margin-bottom: 5px"><b style="font-size: small">2. Choose Search Radius:</b></div>
+    <div style="margin-bottom: 5px"><div style="margin-bottom: 5px"><b style="font-size: small">${nls.step2}</b></div>
         <p><input type="number" id="sliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  value="5" min="1" max="250"/>&nbsp;Miles</p>
     </div>
     <div id="slider"></div>
     <br />
-    <div id="wasteFilter" style="display: none">
-        <div style="margin-bottom: 5px;">
-            <div style="margin-bottom: 5px"><b style="font-size: small">   Estimated Waste Per Week</b></div>
-
-            <p><select id="estimatedWasteSelect">
-                <option value=">=">Greater than or equal to</option>
-                <option value="<=">Less than or equal to</option>
-            </select><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  style="width: 50px" value="0" min="0" max="250"/>&nbsp;Tons Per Week</p>
-        </div>
-        <div id="wasteSlider"></div>
-    </div>
-
-    <br />
-    <div style="font-weight:700; font-size: small">${nls.label1}</div>
     <div id="geocoder-area">
         <div ><button id="btnGetAdd" data-dojo-type="dijit/form/Button">Get Address from Map</button></div>
         <div id="search" ></div>
         <div style="position: relative; top: -25px; left: 230px;"><button id="btnClear" data-dojo-type="dijit/form/Button">Clear Map</button></div>
         <!--<button id="btnSearch" data-dojo-type="dijit/form/Button">Search</button>-->
     </div>
-    <div>
-        <div style="position: relative; top: -25px; left: 10px;"><img src="./widgets/Demo/images/arrow2.png" style="height: 25px;">Click to search again</div>
-        <div><button id="runBtn" data-dojo-type="dijit/form/Button">Run Search</button></div>
+    <div id="wasteFilter" style="display: none">
+        <div style="margin-bottom: 5px;">
+            <div style="margin-bottom: 5px"><b style="font-size: small">Filter by Estimated Waste</b></div>
+
+            <p><select id="estimatedWasteSelect">
+                <option value=">=">Greater than or equal to</option>
+                <option value="<=">Less than or equal to</option>
+            </select><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  style="width: 50px" value="0" min="0" max="250"/>&nbsp;Tons Per Week</p>
+        </div>
+        <div id="wasteSlider"></div><br />
     </div>
+
+
+    <!--<div style="font-weight:700; font-size: small">${nls.label1}</div>-->
+
+    <div>
+        <!--<div style="position: relative; top: -25px; left: 10px;"><img src="./widgets/Demo/images/arrow2.png" style="height: 25px;">Click to search again</div>-->
+        <div><button id="runBtn" data-dojo-type="dijit/form/Button">Run Search</button></div>
+    </div><br />
         <div id="messages"></div>
         <div id="totalResultsDiv"></div>
         <div id="grid" style="height: 200px"></div><br />

@@ -14,4 +14,12 @@
   border: inset;
 }
 
+#runBtn{
+
+  box-sizing: border-box;
+  border-width: 2px;
+  border-style: outset;
+  border-color: green;
+}
+
 
