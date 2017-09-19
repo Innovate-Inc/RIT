@@ -1,7 +1,7 @@
 define({
   root: ({
     step1: "",
-    step2: "2. Choose a radius and Location",
+    step2: "2. Choose a Radius and Location",
     label1: "3. Enter an Address:",
     label2: "This is configurable.",
     downloadText: "Follow Steps below to find the data you’re looking for. Don’t forget you can download search-specific data after performing a search, or you can download full datasets "

@@ -64,19 +64,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
       //this.mapIdNode.innerHTML = 'map id:' + this.map.id;
 
         //on select event for geocoding
-        //geocoder.on("select", this.geocodeSelect);
-
-        //set up download button
-        var downloadBtn = dom.byId("btnDLResults");
-        on(downloadBtn, 'click', this._prepDataForDownload);
-
-        //geocoder.on("clear", this.clearSearch);
-
-        //button onClicks
-        //on(dom.byId("btnClear"), 'click', this.clearSearch);
-        on(btnClear, 'click', function(){
-           console.log("clear amp");
-
+        geocoder.on("select", function(){
             //Clear previous search
             for(var i=0; i<featLayerList.length; i++){
                 featLayerList[i].clearSelection();
@@ -87,6 +75,29 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             dojo.style("grid", "visibility", "hidden");
             dojo.style("downloads", "visibility", "hidden");
         });
+
+        //set up download button
+        var downloadBtn = dom.byId("btnDLResults");
+        on(downloadBtn, 'click', this._prepDataForDownload);
+
+        //geocoder.on("clear", this.clearSearch);
+
+        //button onClicks
+        //on(dom.byId("btnClear"), 'click', this.clearSearch);
+        on(btnClear, 'click',this._ClearBtnClick);
+        // on(btnClear, 'click', function(){
+        //    console.log("clear amp");
+        //
+        //     //Clear previous search
+        //     for(var i=0; i<featLayerList.length; i++){
+        //         featLayerList[i].clearSelection();
+        //         curMap.removeLayer(featLayerList[i]);
+        //     }
+        //     curMap.graphics.clear();
+        //     dojo.style("downloadLbl", "visibility", "hidden"); //grid  downloads
+        //     dojo.style("grid", "visibility", "hidden");
+        //     dojo.style("downloads", "visibility", "hidden");
+        // });
         //on(btnSearch, 'click', function(){
         //    //highlight symbol
         //
@@ -258,7 +269,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     dojo.style("wasteFilter", "display", "block");
                     fiterVisible = true;
                 }else{
-                    //dojo.style("wasteFilter", "display", "none");
+                    dojo.style("wasteFilter", "display", "none");
                 }
             });
         }
@@ -451,7 +462,19 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
                 var applyFilter = self._addWasteFilter(layer, element);
                 if(applyFilter){
-                    query1.where = "Est_Waste_Ton_wk" + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
+                    var qfieldName ="Est_Waste_Ton_wk";
+                    var str = featLayer.id;
+                    var res = str.split("_");
+                    if(res[1] == "Hospitality"){
+                        qfieldName ="Est_food_t_wk";
+                    }else if(res[1] == "Restaurants"){
+                        qfieldName ="Est_Waste_tons_wk";
+                    }else if(res[1] == "Institutions"){
+                        qfieldName ="Est_Waste_Ton_wk";
+                    }else if(res[1] == "Retail"){
+                        qfieldName ="Est__Waste_Ton_wk";
+                    }
+                    query1.where = qfieldName + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
                     console.log( query1.where);
                 }
 
@@ -739,6 +762,17 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     },
 
     addToggle: function(evt){
+        //clear map
+        //Clear previous search
+        for(var i=0; i<featLayerList.length; i++){
+            featLayerList[i].clearSelection();
+            curMap.removeLayer(featLayerList[i]);
+        }
+        curMap.graphics.clear();
+        dojo.style("downloadLbl", "visibility", "hidden"); //grid  downloads
+        dojo.style("grid", "visibility", "hidden");
+        dojo.style("downloads", "visibility", "hidden");
+
         //console.log("Get Address from Map", evt);
         var addressToggle =  dom.byId("btnGetAdd");
         if(domStyle.get(addressToggle, 'border-style') == 'inset'){
@@ -772,6 +806,20 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 }
             });
         }));
+    },
+
+    _ClearBtnClick: function(){
+        console.log("clear amp");
+
+        //Clear previous search
+        for(var i=0; i<featLayerList.length; i++){
+            featLayerList[i].clearSelection();
+            curMap.removeLayer(featLayerList[i]);
+        }
+        curMap.graphics.clear();
+        dojo.style("downloadLbl", "visibility", "hidden"); //grid  downloads
+        dojo.style("grid", "visibility", "hidden");
+        dojo.style("downloads", "visibility", "hidden");
     },
 
     onClose: function(){
