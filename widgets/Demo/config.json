@@ -11,6 +11,19 @@
 		"big box",
 		"convenience stores",
 		"supermarkets"
-	]
+	],
+	"catFields": {
+		"CAFO": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Mature_Dairy_Cattle", "Heifers", "Veal_Cattle", "Other_Cattle", "Swine_55_Up", "Swine_55_Down", "Horses", "Sheep_Lamb", "Turkeys", "Broilers", "Layers", "Ducks", "Other", "Est_Manure_MT_yr", "Type_"],
+		"Hospitality": ["Company_Name", "Address", "City", "State", "ZIP", "County", "Phone_Number_Combined", "Type_", "Est_food_t_wk"],
+		"Food Processors": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Type_"],
+		"Restaurants": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Est_Waste_tons_wk", "Type_"],
+		"Institutions": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Telephone", "Est_Waste_Ton_wk", "Type_"],
+		"Retail": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Website", "Est__Waste_Ton_wk", "Type_"],
+		"Anaerobic Digesters": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Digester_Type", "Biogas_Use", "Co_Digestion", "Capacity", "Farm_Type", "Type_"],
+		"BUD": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Waste_Types", "Beneficial_Use", "Type_"],
+		"Compost Sites": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Website", "Major_Feedstock", "Owner", "Tipping_Fee", "Type_"],
+		"Food Banks": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Pounds_Distributed_Annually", "Type_"],
+		"Grease Trap Waste": ["Facility_Name", "Address", "City", "State", "ZIP", "County", "Waste_Accepted", "Type_"]
+	}
 
 }

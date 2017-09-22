@@ -51,7 +51,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
       //Setup geocode event
         geocoder = new Geocoder({
             arcgisGeocoder: {
-                placeholder: "Find a place",
+                placeholder: "Enter an Address",
                 sourceCountry: "US"
             },
             autoComplete: true,
@@ -474,8 +474,18 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     }else if(res[1] == "Retail"){
                         qfieldName ="Est__Waste_Ton_wk";
                     }
-                    query1.where = qfieldName + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
+
+                    if(wasteLogic == "<="){
+                        query1.where = qfieldName + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value + " OR " + qfieldName + " IS NULL";
+                    }else if(wasteLogic == ">=" && dom.byId("wasteSliderValue").value == 0){
+                        query1.where = qfieldName + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value + " OR " + qfieldName + " IS NULL";
+                    }else{
+                        query1.where = qfieldName + " " + wasteLogic + " " + dom.byId("wasteSliderValue").value;
+                    }
+
                     console.log( query1.where);
+                }else{
+                    query1.where ="";
                 }
 
                 featLayer.selectFeatures(query1, FeatureLayer.SELECTION_NEW, function (response) {
@@ -500,14 +510,25 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                         //alert(featLayer.id + " Organzed");
                         var popTotal = "";
                         var list = [];
+
                         for (var x = 0; x < features.length; x++) {
-                            popTotal = popTotal + "<div><p id='resultlListd'>" + features[x].attributes["Facility_Name"] + "</p></div>";
-                            list[x] = {
-                                "id": features[x].attributes["OBJECTID"],
-                                "Name": features[x].attributes["Facility_Name"],
-                                "type": features[x].attributes["Type_"],
-                                "layer": features[x]._layer.id
-                            };
+                            if(features[x].attributes["Facility_Name"]){
+                                popTotal = popTotal + "<div><p id='resultlListd'>" + features[x].attributes["Facility_Name"] + "</p></div>";
+                                list[x] = {
+                                    "id": features[x].attributes["OBJECTID"],
+                                    "Name": features[x].attributes["Facility_Name"],
+                                    "type": features[x].attributes["Type_"],
+                                    "layer": features[x]._layer.id
+                                };
+                            }else if(features[x].attributes["Company_Name"]){
+                                popTotal = popTotal + "<div><p id='resultlListd'>" + features[x].attributes["Company_Name"] + "</p></div>";
+                                list[x] = {
+                                    "id": features[x].attributes["OBJECTID"],
+                                    "Name": features[x].attributes["Company_Name"],
+                                    "type": features[x].attributes["Type_"],
+                                    "layer": features[x]._layer.id
+                                };
+                            }
                         }
 
                         //popTotal = popTotal + "</ul>";
@@ -600,7 +621,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     fieldnames.push(item.name);
                 });
             }
-            subCatObject[layID[1]].push(fieldnames);
+            //subCatObject[layID[1]].push(fieldnames);
             //prepare CSV data
             // var csvData = new Array();
             // csvData.push(fieldnames);
@@ -664,6 +685,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
        //loop through subcats and add results to UI
         subCats.forEach(function(sb, index, array){
             if(subCatObject[sb].length > 0){
+
+                subCatObject[sb].unshift(self.config.catFields[sb]);
                 console.log("if this then create csv");
 
                 // put data array into file, name file and attach to link
@@ -684,7 +707,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     // it needs to implement server side export
                     link.setAttribute("href", "http://www.example.com/export");
                 }
-                link.innerHTML = "Export csv of " + sb + " (" + subCatObject[sb].length + " Results)";
+                var numOfResults = subCatObject[sb].length-1;
+                link.innerHTML = "Export csv of " + sb + " (" + numOfResults + " Results)";
 
                 var dd = dom.byId("downloads");
 
