@@ -1,9 +1,9 @@
 define(['dojo/dom','dojo/_base/declare', 'jimu/BaseWidget', "esri/map", "dgrid/OnDemandGrid", "dgrid/Selection", "dojo/store/Memory", "dojo/_base/array", "esri/dijit/Geocoder", "dijit/form/HorizontalSlider",
     "esri/layers/FeatureLayer", "esri/tasks/query", "dojo/query", "esri/geometry/Circle",
-    "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol",
+    "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol", "esri/geometry/Extent", "esri/SpatialReference",
     "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer",
     "esri/config", "esri/Color", "dojo/dom", "dojo/dom-construct", "dojo/dom-style", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/LayerInfo", "dijit/form/CheckBox", "dojo/_base/array", "dojo/on", "jimu/LayerInfos/LayerInfos", "dojo/_base/lang"],
-function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domConstruct, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on, LayerInfos, lang) {
+function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocoder, HorizontalSlider, FeatureLayer, Query, query, Circle, Graphic, InfoTemplate, SimpleMarkerSymbol, Extent, SpatialReference, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, config, Color, dom, domConstruct, domStyle, ArcGISDynamicMapServiceLayer, LayerInfo, CheckBox, arrayUtils, on, LayerInfos, lang) {
     //To create a widget, you need to derive from BaseWidget.
     
     //var queryLayer;
@@ -47,12 +47,15 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             SimpleMarkerSymbol.STYLE_SQUARE).setColor(
             new Color([255, 0, 0, 0.5])
         );
+        //Get search extent
+        var geocoderExtent = new Extent(-79.835,40.452,-71.793,45.101, new SpatialReference({ wkid:4326 }));
 
       //Setup geocode event
         geocoder = new Geocoder({
             arcgisGeocoder: {
-                placeholder: "Enter an Address",
-                sourceCountry: "US"
+                placeholder: "Or Enter an Address",
+                sourceCountry: "US",
+                searchExtent: geocoderExtent
             },
             autoComplete: true,
             map: this.map,
@@ -143,8 +146,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             name: "estimatedWaste",
             value: 0,
             minimum: 1,
-            maximum: 250,
-            discreteValues: 250,
+            maximum: 100,
+            discreteValues: 100,
             intermediateChanges: false,
             style: "width:300px;",
             onChange: function (value) {
@@ -156,10 +159,10 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
         var estimatedWasteText = dom.byId("wasteSliderValue");
         on(estimatedWasteText, "input", function(){
-            if(distText.value <= 250){
+            if(estimatedWasteText.value <= 100){
                 dijit.byId("wasteSlider").set("value", estimatedWasteText.value);
             }else{
-                dijit.byId("wasteSlider").set("value", 250);
+                dijit.byId("wasteSlider").set("value", 100);
             }
         });
         //Get value from waste logic dropdown

@@ -1,12 +1,12 @@
 <div>
     <div style="text-align: right"><a href="https://www.rit.edu/affiliate/nysp2i/food/self-declaration-survey">Add your company to the Organic Resource Locator</a></div>
     <div style="text-align: right"><a href="mailto:food.p2i@rit.edu?subject=Organic Resource Locator">Questions or Comments?</a></div><br />
-    <div><p>${nls.downloadText}<a href=''>here</a>.</p></div><br />
+    <div><p>${nls.downloadText}<a href='https://www.rit.edu/affiliate/nysp2i/food/organic-resource-locator'>here</a>.</p></div><br />
 
     <div style="margin-bottom: 5px"><b style="font-size: small">1. Choose Layer: </b></div><span id="layer_list"></span><br />
     <br />
     <div style="margin-bottom: 5px"><div style="margin-bottom: 5px"><b style="font-size: small">${nls.step2}</b></div>
-        <p><input type="number" id="sliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  value="5" min="1" max="250"/>&nbsp;Miles</p>
+        <p><input type="number" id="sliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  value="5" min="1" max="250"/>&nbsp;miles</p>
     </div>
     <div id="slider"></div>
     <br />
@@ -18,19 +18,15 @@
     </div>
     <div id="wasteFilter" style="display: none">
         <div style="margin-bottom: 5px;">
-            <div style="margin-bottom: 5px"><b style="font-size: small">Filter businesses by estimated food waste</b></div>
+            <div style="margin-bottom: 5px"><b style="font-size: small">3. Filter Businesses by Estimated Food Waste:</b></div>
 
             <p><select id="estimatedWasteSelect">
                 <option value=">=">Greater than or equal to</option>
                 <option value="<=">Less than or equal to</option>
             </select><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  style="width: 50px" value="0" min="0" max="250"/>&nbsp;Tons Per Week</p>
         </div>
-        <div id="wasteSlider"></div><br />
+        <div id="wasteSlider" ></div><br />
     </div>
-
-
-    <!--<div style="font-weight:700; font-size: small">${nls.label1}</div>-->
-
     <div>
         <!--<hr>-->
         <div style="text-align: center"><button id="runBtn" class="jimu-btn" data-dojo-type="dijit/form/Button">Run Search</button></div>
