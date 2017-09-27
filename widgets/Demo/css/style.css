@@ -9,8 +9,9 @@
 .simpleGeocoder .esriGeocoder{
   /*margin-left: 30px;*/
 }
-.esriGeocoderResults{
-
+#wasteSlider{
+  z-index: 0;
+  position: absolute;
 }
 
 .btnInset{
