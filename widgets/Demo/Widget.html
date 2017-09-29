@@ -12,7 +12,9 @@
     <br />
     <div id="geocoder-area">
         <div ><button id="btnGetAdd" data-dojo-type="dijit/form/Button">Choose Location From Map</button></div>
-        <div id="search" ></div>
+        <div id="addwindow">
+            <div id="search" ></div>
+        </div>
         <div style="position: relative; top: -25px; left: 230px;"><button id="btnClear" data-dojo-type="dijit/form/Button">Clear Map</button></div>
         <!--<button id="btnSearch" data-dojo-type="dijit/form/Button">Search</button>-->
     </div>
@@ -23,7 +25,7 @@
             <p><select id="estimatedWasteSelect">
                 <option value=">=">Greater than or equal to</option>
                 <option value="<=">Less than or equal to</option>
-            </select><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  style="width: 50px" value="0" min="0" max="250"/>&nbsp;Tons Per Week</p>
+            </select><input type="number" id="wasteSliderValue" data-dojo-type="dijit/form/NumberTextBox" required="true"  style="width: 50px" value="0" min="0" max="250"/>&nbsp;tons per week</p>
         </div>
         <div id="wasteSlider" ></div><br />
     </div>

@@ -79,39 +79,25 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             dojo.style("downloads", "visibility", "hidden");
         });
 
+        geocoder.on("click", function(){
+
+            var addressToggle =  dom.byId("btnGetAdd");
+            if(domStyle.get(addressToggle, 'border-style') == 'inset'){
+                curMap.graphics.clear();
+                domStyle.set(addressToggle, 'border-style', 'outset');
+                self._managePopups(true);
+                if(signal){
+                    signal.remove();
+                }
+            }
+        });
+
+
         //set up download button
         var downloadBtn = dom.byId("btnDLResults");
         on(downloadBtn, 'click', this._prepDataForDownload);
 
-        //geocoder.on("clear", this.clearSearch);
-
-        //button onClicks
-        //on(dom.byId("btnClear"), 'click', this.clearSearch);
         on(btnClear, 'click',this._ClearBtnClick);
-        // on(btnClear, 'click', function(){
-        //    console.log("clear amp");
-        //
-        //     //Clear previous search
-        //     for(var i=0; i<featLayerList.length; i++){
-        //         featLayerList[i].clearSelection();
-        //         curMap.removeLayer(featLayerList[i]);
-        //     }
-        //     curMap.graphics.clear();
-        //     dojo.style("downloadLbl", "visibility", "hidden"); //grid  downloads
-        //     dojo.style("grid", "visibility", "hidden");
-        //     dojo.style("downloads", "visibility", "hidden");
-        // });
-        //on(btnSearch, 'click', function(){
-        //    //highlight symbol
-        //
-        //    geocoder.select();
-        //    //geocoder.focus();
-        //    //geocoder.find().then(function(results){
-        //    geocoder.searchDelay = 300;
-        //    geocoder.select(geocoder.results[0]);
-        //
-        //    //});
-        //});
 
       console.log('startup');
 
@@ -272,10 +258,14 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     dojo.style("wasteFilter", "display", "block");
                     fiterVisible = true;
                 }else{
-                    dojo.style("wasteFilter", "display", "none");
+                    if(!fiterVisible){
+                        dojo.style("wasteFilter", "display", "none");
+                    }
+
                 }
             });
         }
+
         if(!fiterVisible){
             dojo.style("wasteFilter", "display", "none");
         }
@@ -340,22 +330,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             alert("Please choose a layer to select from");
             return;
         }
-        //get point where mouse clicked
-        // var point;
-        // if(pointOnMap){
-        //     var point = pointOnMap;
-        // }else{
-        //     point = evt.result.feature.geometry;
-        // }
 
-        //Clear graphics on map and add graphic where user clicked
-
-        // var symbol = new SimpleMarkerSymbol().setStyle(
-        //     SimpleMarkerSymbol.STYLE_SQUARE).setColor(
-        //     new Color([255, 0, 0, 0.5])
-        // );
-        // var graphic = new Graphic(point, symbol);
-        // curMap.graphics.add(graphic);
         //Add buffer of users specified distance
         var circleSymb = new SimpleFillSymbol(
             SimpleFillSymbol.STYLE_NULL,
@@ -640,30 +615,6 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                 subCatObject[layID[1]].push(data);
             });
 
-            // // put data array into file, name file and attach to link
-            // var fileName =  layID[0] + ".csv";
-            // var buffer = csvData.join("\n");
-            // var blob = new Blob([buffer], {
-            //     "type": "text/csv;charset=utf8;"
-            // });
-            // var ddiv = document.createElement("div");
-            // var link = document.createElement("a");
-            //
-            // if (link.download !== undefined) { // feature detection
-            //     // Browsers that support HTML5 download attribute
-            //     link.setAttribute("href", window.URL.createObjectURL(blob));
-            //     link.setAttribute("download", fileName);
-            // }
-            // else {
-            //     // it needs to implement server side export
-            //     link.setAttribute("href", "http://www.example.com/export");
-            // }
-            // link.innerHTML = "Export csv of " + fLayer.name + " (" + results.length + " Results)";
-            //
-            // var dd = dom.byId("downloads");
-            //
-            // ddiv.appendChild(link);
-            // dd.appendChild(ddiv);
         }
         dojo.style("downloadLbl", "visibility", "visible");
         dojo.style("grid", "visibility", "visible");
@@ -774,10 +725,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         var point = evt.mapPoint;
         console.log("Clicked on Map", point);
         pointOnMap = point;
-        //geocoder.value = point;
-        //pointOnMap = evt.mapPoint;
 
-        //self.geocodeSelect1(point);
         //Add graphic
         var symbol = new SimpleMarkerSymbol().setStyle(
             SimpleMarkerSymbol.STYLE_SQUARE).setColor(
