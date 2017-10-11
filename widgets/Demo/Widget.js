@@ -587,7 +587,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             }else if(layID[1] == 'BUD'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Waste_Types', 'Beneficial_Use', 'Type_'];
             }else if(layID[1] == 'Compost Sites'){
-                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Website', 'Major_Feedstock', 'Owner', 'Tipping_Fee', 'Type_'];
+                fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County'];
             }else if(layID[1] == 'Food Banks'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Pounds_Distributed_Annually', 'Type_'];
             }else if(layID[1] == 'Grease Trap Waste'){
