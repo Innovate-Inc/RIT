@@ -202,9 +202,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
           }
 
           function updateGroupLayer(){
-           // alert("group layer");
-            //alert(this.id);
-            //alert(layer.layerInfos[this.id].subLayerIds[0]);
+
             var idLayer = [];
             idLayer = layer.layerInfos[this.id].subLayerIds;
             //alert( "idlayer " + idLayer);
@@ -243,7 +241,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             self._wasteFilterVisibility(visible, layer);
 
         }
-        //End LayerLise
+        //End LayerLisT
          
     },
 
@@ -290,9 +288,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
     },
 
     selectInBuffer: function (response) {
-        //var feature;
-        //var features = response.features;
-        //alert(features.length + " features");
+
     },
 
     geocodeSelect: function(evt){
@@ -324,8 +320,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         dom.byId("downloads").innerHTML = "";
         dom.byId("grid").innerHTML = "";
         var fullList = [];
-        //check for selected layers
-        //alert( "layer" + " " + lChecked);
+
         if(lChecked < 1){
             alert("Please choose a layer to select from");
             return;
@@ -366,9 +361,6 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
         //zoom map to radius extent
         curMap.setExtent(circle.getExtent(), true);
 
-        //use a fast bounding box query. will only go to the server if bounding box is outside of the visible map
-        //fLayer.queryFeatures(query1, selObject.selectInBuffer);
-
         //Add results to the grid
         var grid = new (declare([Grid, Selection]))({
             bufferRows: Infinity,
@@ -393,11 +385,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             template.setContent("<b>Facility Name: ${Facility_Name}</b></br>"
                 + "<b>Address: ${Address}</b></br>"
                 + "<b>${City}, ${State} ${ZIP}</b></br>"
-                //+ "<b>Facility Name: ${City}</b>"
-                //+ "<b>Facility Name: ${City}</b>"
+
             );
-            //template.setContent(getTextContent);
-            //alert(element);
 
             var featLayer;
             if (element !== undefined) {
@@ -472,9 +461,8 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     var features = response.features;
                     console.log('Q Isues');
                     facilityName = organizeResults(response);
-                    //alert(facilityName.length);
+
                     fullList = fullList.concat(facilityName);
-                    //alert(fullList.length);
 
                     var memStore = new Memory({data: fullList});
                     grid.set("store", memStore);
@@ -509,12 +497,9 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                             }
                         }
 
-                        //popTotal = popTotal + "</ul>";
-                        //alert(popTotal + "facility");
-                        //return popTotal;
                         return list;
                     }
-                    //}
+
                 });
 
             }
@@ -552,9 +537,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
             fl.selectFeatures(query, FeatureLayer.SELECTION_NEW, function(result) {
                 if ( result.length ) {
                     // re-center the map to the selected feature
-                    //curMap.centerAt(result[0].geometry);
-                    //curMap.infoWindow.setFeatures(result);//result[0].geometry;
-                    //curMap.infoWindow.show(result[0].geometry);
+
                     curMap.centerAt(result[0].geometry);
                 } else {
                     console.log("Feature Layer query returned no features... ", result);
@@ -570,6 +553,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
             var layID = fLayer.id.split('_');
 
+            //If the fields in the service change they must be updated here and in the config.json file.
             if(layID[1] == 'CAFO'){
                 fieldnames = ['Facility_Name', 'Address', 'City', 'State', 'ZIP', 'County', 'Mature_Dairy_Cattle', 'Heifers', 'Veal_Cattle', 'Other_Cattle', 'Swine_55_Up', 'Swine_55_Down', 'Horses', 'Sheep_Lamb', 'Turkeys', 'Broilers', 'Layers', 'Ducks', 'Other', 'Est_Manure_MT_yr', 'Type_'];
             }else if(layID[1] == 'Event Venues & Resorts'){
@@ -599,10 +583,6 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
                     fieldnames.push(item.name);
                 });
             }
-            //subCatObject[layID[1]].push(fieldnames);
-            //prepare CSV data
-            // var csvData = new Array();
-            // csvData.push(fieldnames);
 
             //Load data into array
             results.forEach(function (item, index, array) {
@@ -633,8 +613,7 @@ function (dom, declare, BaseWidget, sMap, Grid, Selection, Memory, array, Geocod
 
     _prepDataForDownload: function(){
         console.log("download has been clicked");
-        console.log("This is CAFO", subCatObject);
-        //console.log("This is Hospitality", csvHospitality);
+
         dom.byId("downloads").innerHTML = "";
        //loop through subcats and add results to UI
         subCats.forEach(function(sb, index, array){
